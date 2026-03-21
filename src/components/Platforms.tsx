@@ -1,39 +1,44 @@
 import { useEffect, useRef } from "react";
+import { SiMeta, SiGoogleads, SiTiktok } from "@icons-pack/react-simple-icons";
+import { Linkedin } from "lucide-react";
+
+const platformIcons = {
+  Meta: SiMeta,
+  "Google Ads": SiGoogleads,
+  "TikTok for Business": SiTiktok,
+  LinkedIn: Linkedin,
+};
 
 const platforms = [
   {
-    name: "Meta",
+    name: "Meta" as const,
     sub: "Facebook & Instagram Ads",
     status: "available",
     statusLabel: "Available",
-    emoji: "📘",
     glow: true,
     commands: ["campaign", "audience", "insight", "post", "creative", "raw"],
   },
   {
-    name: "Google Ads",
+    name: "Google Ads" as const,
     sub: "Search, Display & Shopping",
     status: "soon",
     statusLabel: "Coming Soon",
-    emoji: "🔍",
     glow: false,
     commands: [],
   },
   {
-    name: "TikTok for Business",
+    name: "TikTok for Business" as const,
     sub: "TikTok Ads Manager",
     status: "soon",
     statusLabel: "Coming Soon",
-    emoji: "🎵",
     glow: false,
     commands: [],
   },
   {
-    name: "LinkedIn",
+    name: "LinkedIn" as const,
     sub: "LinkedIn Marketing Solutions",
     status: "soon",
     statusLabel: "Coming Soon",
-    emoji: "💼",
     glow: false,
     commands: [],
   },
@@ -85,7 +90,10 @@ export default function Platforms() {
               style={{ transitionDelay: `${i * 100}ms` }}
             >
               <div className="flex items-start justify-between">
-                <span className="text-4xl">{p.emoji}</span>
+                {(() => {
+                  const Icon = platformIcons[p.name];
+                  return <Icon className="w-9 h-9 text-muted-foreground" />;
+                })()}
                 <span
                   className={`text-xs font-mono px-2.5 py-1 rounded-full ${
                     p.status === "available"
