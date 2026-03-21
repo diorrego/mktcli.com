@@ -87,7 +87,7 @@ export default function CommandReference() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16 fade-in-up">
           <p className="text-sm font-mono text-primary mb-3 tracking-widest uppercase">Reference</p>
-          <h2 className="text-4xl md:text-5xl font-semibold">
+          <h2 className="text-4xl md:text-5xl font-semibold text-balance">
             Every command,{" "}
             <span className="gradient-text">right here</span>
           </h2>

@@ -69,11 +69,11 @@ export default function Platforms() {
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-16 fade-in-up">
           <p className="text-sm font-mono text-primary mb-3 tracking-widest uppercase">Platforms</p>
-          <h2 className="text-4xl md:text-5xl font-semibold">
+          <h2 className="text-4xl md:text-5xl font-semibold text-balance">
             One CLI,{" "}
             <span className="gradient-text">every major platform</span>
           </h2>
-          <p className="text-muted-foreground mt-4 max-w-xl mx-auto">
+          <p className="text-muted-foreground mt-4 max-w-xl mx-auto text-balance">
             Meta is fully supported today. Google, TikTok and LinkedIn are on the roadmap.
           </p>
         </div>
@@ -107,7 +107,7 @@ export default function Platforms() {
 
               <div>
                 <h3 className="font-semibold text-lg mb-1">{p.name}</h3>
-                <p className="text-muted-foreground text-sm">{p.sub}</p>
+                <p className="text-muted-foreground text-sm text-balance">{p.sub}</p>
               </div>
 
               {p.commands.length > 0 && (

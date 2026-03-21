@@ -51,7 +51,7 @@ export default function FeaturesGrid() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16 fade-in-up">
           <p className="text-sm font-mono text-primary mb-3 tracking-widest uppercase">Features</p>
-          <h2 className="text-4xl md:text-5xl font-semibold">
+          <h2 className="text-4xl md:text-5xl font-semibold text-balance">
             Everything you need,{" "}
             <span className="gradient-text">nothing you don't</span>
           </h2>
@@ -69,7 +69,7 @@ export default function FeaturesGrid() {
               </div>
               <div>
                 <h3 className="font-semibold mb-1.5">{feat.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{feat.desc}</p>
+                <p className="text-muted-foreground text-sm leading-relaxed text-balance">{feat.desc}</p>
               </div>
             </div>
           ))}

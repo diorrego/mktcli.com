@@ -77,7 +77,7 @@ export default function Installation() {
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-16 fade-in-up">
           <p className="text-sm font-mono text-primary mb-3 tracking-widest uppercase">Installation</p>
-          <h2 className="text-4xl md:text-5xl font-semibold">
+          <h2 className="text-4xl md:text-5xl font-semibold text-balance">
             Up and running{" "}
             <span className="gradient-text">in 60 seconds</span>
           </h2>

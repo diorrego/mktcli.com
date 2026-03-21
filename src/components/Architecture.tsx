@@ -56,11 +56,11 @@ export default function Architecture() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16 fade-in-up">
           <p className="text-sm font-mono text-primary mb-3 tracking-widest uppercase">Architecture</p>
-          <h2 className="text-4xl md:text-5xl font-semibold">
+          <h2 className="text-4xl md:text-5xl font-semibold text-balance">
             A Rust workspace{" "}
             <span className="gradient-text">built to extend</span>
           </h2>
-          <p className="text-muted-foreground mt-4 max-w-xl mx-auto">
+          <p className="text-muted-foreground mt-4 max-w-xl mx-auto text-balance">
             Each platform lives in its own crate implementing the same{" "}
             <code className="font-mono text-sm text-primary bg-primary/10 px-1.5 py-0.5 rounded">
               MarketingProvider
@@ -95,7 +95,7 @@ export default function Architecture() {
 
           {/* Trait explanation */}
           <div className="border-t border-white/10 pt-8">
-            <p className="text-sm text-muted-foreground text-center mb-5">
+            <p className="text-sm text-muted-foreground text-center mb-5 text-balance">
               The{" "}
               <code className="font-mono text-primary bg-primary/10 px-1.5 py-0.5 rounded">
                 MarketingProvider

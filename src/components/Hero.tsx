@@ -69,14 +69,14 @@ export default function Hero() {
         </div>
 
         {/* Headline */}
-        <h1 className="text-5xl md:text-7xl font-semibold leading-tight tracking-tight animate-fade-in">
+        <h1 className="text-5xl md:text-7xl font-semibold leading-tight tracking-tight animate-fade-in text-balance">
           <span className="gradient-text">Marketing automation</span>
           <br />
           <span className="text-foreground">from the terminal.</span>
         </h1>
 
         {/* Subheadline */}
-        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed animate-fade-in">
+        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed animate-fade-in text-balance">
           Manage Meta, Google, TikTok and LinkedIn campaigns from one CLI. Scriptable, automatable, and safe with dry-run mode.
         </p>
 

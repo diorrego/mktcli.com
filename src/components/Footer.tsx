@@ -15,7 +15,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="flex flex-col gap-3 max-w-xs">
             <span className="font-mono font-semibold text-xl gradient-text">mkt-cli</span>
-            <p className="text-muted-foreground text-sm leading-relaxed">
+            <p className="text-muted-foreground text-sm leading-relaxed text-balance">
               An open-source CLI for managing paid and organic marketing across all major platforms from your terminal.
             </p>
             <a

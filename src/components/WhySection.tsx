@@ -39,7 +39,7 @@ export default function WhySection() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16 fade-in-up">
           <p className="text-sm font-mono text-primary mb-3 tracking-widest uppercase">Why mkt</p>
-          <h2 className="text-4xl md:text-5xl font-semibold">
+          <h2 className="text-4xl md:text-5xl font-semibold text-balance">
             Built for people who think in{" "}
             <span className="gradient-text">commands</span>
           </h2>
@@ -59,7 +59,7 @@ export default function WhySection() {
               </div>
               <div>
                 <h3 className="text-lg font-semibold mb-2">{card.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{card.desc}</p>
+                <p className="text-muted-foreground text-sm leading-relaxed text-balance">{card.desc}</p>
               </div>
             </div>
           ))}
