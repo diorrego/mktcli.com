@@ -112,7 +112,7 @@ export default function CommandReference() {
           </div>
 
           {/* Code block */}
-          <div className="p-6 font-mono text-sm overflow-x-auto">
+          <div className="p-6 font-mono text-sm overflow-x-auto notranslate" translate="no">
             <div className="flex flex-col gap-3">
               {current.lines.map((line, i) => (
                 <div key={i} className="flex items-start gap-3 leading-relaxed">

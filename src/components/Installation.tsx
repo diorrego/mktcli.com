@@ -24,7 +24,7 @@ function CodeBlock({ code, label }: { code: string; label?: string }) {
           </button>
         </div>
       )}
-      <div className="px-5 py-4 font-mono text-sm text-foreground whitespace-pre">
+      <div className="px-5 py-4 font-mono text-sm text-foreground whitespace-pre notranslate" translate="no">
         {code}
       </div>
     </div>
@@ -112,7 +112,7 @@ export default function Installation() {
                 </div>
                 <div className="flex flex-col gap-3 flex-1">
                   <h4 className="font-semibold text-lg">{step.title}</h4>
-                  <div className="glass rounded-lg px-5 py-3 font-mono text-sm text-foreground whitespace-pre-wrap border border-white/5">
+                  <div className="glass rounded-lg px-5 py-3 font-mono text-sm text-foreground whitespace-pre-wrap border border-white/5 notranslate" translate="no">
                     {step.code}
                   </div>
                 </div>

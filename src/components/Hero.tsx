@@ -102,7 +102,7 @@ export default function Hero() {
         </div>
 
         {/* Animated Terminal */}
-        <div className="w-full max-w-2xl mt-4 rounded-xl overflow-hidden glass border border-white/10 text-left animate-fade-in">
+        <div className="w-full max-w-2xl mt-4 rounded-xl overflow-hidden glass border border-white/10 text-left animate-fade-in notranslate" translate="no">
           {/* Terminal titlebar */}
           <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-white/5">
             <span className="w-3 h-3 rounded-full bg-red-400/80" />

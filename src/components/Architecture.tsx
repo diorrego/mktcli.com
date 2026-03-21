@@ -106,7 +106,7 @@ export default function Architecture() {
               </code>{" "}
               is the contract every platform must satisfy:
             </p>
-            <div className="glass rounded-xl p-6 font-mono text-sm overflow-x-auto border border-white/5">
+            <div className="glass rounded-xl p-6 font-mono text-sm overflow-x-auto border border-white/5 notranslate" translate="no">
               <div className="flex flex-col gap-1.5">
                 <span className="text-muted-foreground/50">// mkt-core/src/provider.rs</span>
                 <span>
