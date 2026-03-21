@@ -117,17 +117,17 @@ export default function Architecture() {
                 <span className="pl-6 text-muted-foreground">
                   <span className="text-brand-blue">fn</span>
                   <span> list_campaigns</span>
-                  <span className="text-muted-foreground">(&self, opts: &CampaignListOpts) -{">"} Result{"<"}Vec{"<"}Campaign{">"}>{";"}</span>
+                  <span className="text-muted-foreground">{"(&self, opts: &CampaignListOpts) -> Result<Vec<Campaign>>;"}</span>
                 </span>
                 <span className="pl-6 text-muted-foreground">
                   <span className="text-brand-blue">fn</span>
                   <span> create_audience</span>
-                  <span className="text-muted-foreground">(&self, opts: &AudienceCreateOpts) -{">"} Result{"<"}Audience{">"}{";"}</span>
+                  <span className="text-muted-foreground">{"(&self, opts: &AudienceCreateOpts) -> Result<Audience>;"}</span>
                 </span>
                 <span className="pl-6 text-muted-foreground">
                   <span className="text-brand-blue">fn</span>
                   <span> get_insights</span>
-                  <span className="text-muted-foreground">(&self, opts: &InsightOpts) -{">"} Result{"<"}Insights{">"}{";"}</span>
+                  <span className="text-muted-foreground">{"(&self, opts: &InsightOpts) -> Result<Insights>;"}</span>
                 </span>
                 <span className="pl-6 text-muted-foreground">
                   <span className="text-muted-foreground/50">// ... and more</span>
