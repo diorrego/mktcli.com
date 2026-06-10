@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { Terminal, ArrowRight, Github } from "lucide-react";
 
 const commands = [
-  { prompt: "mkt", cmd: "meta campaign list --format table", comment: "# list all active campaigns" },
-  { prompt: "mkt", cmd: "meta audience create --name 'Devs 25-34' --type lookalike", comment: "# create audience" },
-  { prompt: "mkt", cmd: "meta insight get --campaign-id 123 --metric impressions,ctr", comment: "# pull analytics" },
-  { prompt: "mkt", cmd: "meta post publish --message 'Launch day!' --dry-run", comment: "# safe dry run first" },
-  { prompt: "mkt", cmd: "doctor", comment: "# check credentials & connection" },
+  { prompt: "mkt", cmd: "--output json meta campaign list --status active", comment: "# stable JSON on stdout — agents parse this" },
+  { prompt: "mkt", cmd: "--dry-run google campaign create --name 'Q3' --objective SEARCH --daily-budget 50", comment: "# preview first, spend never starts by accident" },
+  { prompt: "mkt", cmd: "meta adset create --campaign 1203… --status paused --daily-budget 2500", comment: "# everything is created paused" },
+  { prompt: "mkt", cmd: "tiktok insight get --metrics spend,impressions,clicks", comment: "# unified metrics across platforms" },
+  { prompt: "mkt", cmd: "doctor", comment: "# exit 0 = credentials ready (values never printed)" },
 ];
 
 export default function Hero() {
@@ -65,19 +65,22 @@ export default function Hero() {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full text-sm font-mono text-muted-foreground animate-fade-in">
           <span className="w-2 h-2 rounded-full bg-green-neon animate-pulse inline-block" />
-          Written in Rust &middot; Cross-platform &middot; MIT / Apache
+          Free &amp; open source &middot; Written in Rust &middot; MIT / Apache
         </div>
 
         {/* Headline */}
         <h1 className="text-5xl md:text-7xl font-semibold leading-tight tracking-tight animate-fade-in text-balance">
-          <span className="gradient-text">Marketing automation</span>
+          <span className="gradient-text">The ads CLI built for</span>
           <br />
-          <span className="text-foreground">from the terminal.</span>
+          <span className="text-foreground">coding agents.</span>
         </h1>
 
         {/* Subheadline */}
         <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed animate-fade-in text-balance">
-          Manage Meta, Google, TikTok and LinkedIn campaigns from one CLI. Scriptable, automatable, and safe with dry-run mode.
+          Claude Code, Codex, and any agent with a shell can run your ads on Meta,
+          Google, TikTok and LinkedIn — the same way they use the AWS or GitHub CLIs.
+          Stable JSON output, documented exit codes, dry-run everywhere, and
+          campaigns that are always created paused.
         </p>
 
         {/* CTA buttons */}

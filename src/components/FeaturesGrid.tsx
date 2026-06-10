@@ -1,36 +1,36 @@
 import { useEffect, useRef } from "react";
-import { Megaphone, Users, FileText, BarChart2, Table2, Settings2 } from "lucide-react";
+import { Bot, ShieldCheck, Braces, Users, BarChart2, Plug } from "lucide-react";
 
 const features = [
   {
-    icon: Megaphone,
-    title: "Campaign management",
-    desc: "Create, list, update and delete campaigns across platforms with a consistent set of flags.",
+    icon: Bot,
+    title: "Agent-first contract",
+    desc: "Documented exit codes (0-7), structured JSON errors with recovery hints, and an AGENTS.md operating guide. Agents branch on codes, not on prose.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Spend safety by default",
+    desc: "Every mutating command supports --dry-run, and campaigns, ad sets and boosts are always created paused. Activating spend is an explicit step.",
+  },
+  {
+    icon: Braces,
+    title: "Stable JSON output",
+    desc: "Data goes to stdout as JSON with --output json; logs go to stderr. Pipe into jq, scripts, or straight into an agent's context.",
   },
   {
     icon: Users,
-    title: "Audience creation",
-    desc: "Build custom and lookalike audiences directly from the CLI without touching any UI.",
-  },
-  {
-    icon: FileText,
-    title: "Organic post publishing",
-    desc: "Publish posts and schedule content on pages and profiles from your terminal.",
+    title: "Audiences with local PII hashing",
+    desc: "Emails and phones are normalized and SHA-256 hashed on your machine before any upload — the same contract on every platform.",
   },
   {
     icon: BarChart2,
-    title: "Analytics and insights",
-    desc: "Pull impressions, CTR, spend and reach metrics for any campaign or time window.",
+    title: "Unified analytics",
+    desc: "Impressions, clicks and cost in currency units across Meta, Google (GAQL), TikTok and LinkedIn, in table, JSON or CSV.",
   },
   {
-    icon: Table2,
-    title: "Multiple output formats",
-    desc: "Switch between table, JSON and CSV output to fit any workflow or downstream tool.",
-  },
-  {
-    icon: Settings2,
-    title: "Profile-based multi-account",
-    desc: "Manage multiple ad accounts and profiles without re-authenticating. Switch in one flag.",
+    icon: Plug,
+    title: "MCP server included",
+    desc: "mkt mcp serve speaks the Model Context Protocol over stdio for Claude Desktop and ChatGPT. Coding agents just use the CLI.",
   },
 ];
 
