@@ -39,15 +39,15 @@ const steps = [
   },
   {
     num: "02",
-    title: "Set up your credentials",
-    code: `mkt config set --provider meta \\
-  --access-token <your_token> \\
-  --account-id act_<your_account_id>`,
+    title: "Set your credentials (env vars or config.toml)",
+    code: `export MKT_META_ACCESS_TOKEN=<your_token>
+export MKT_META_AD_ACCOUNT_ID=act_<account_id>
+mkt doctor   # exit 0 = ready`,
   },
   {
     num: "03",
     title: "Run your first command",
-    code: "mkt meta campaign list --format table",
+    code: "mkt --output json meta campaign list",
   },
 ];
 

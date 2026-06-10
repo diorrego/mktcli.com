@@ -12,35 +12,35 @@ const platformIcons = {
 const platforms = [
   {
     name: "Meta" as const,
-    sub: "Facebook & Instagram Ads",
+    sub: "Graph API v25.0 · Facebook & Instagram",
     status: "available",
     statusLabel: "Available",
     glow: true,
-    commands: ["campaign", "audience", "insight", "post", "creative", "raw"],
+    commands: ["campaign", "adset", "audience", "insight", "post", "creative", "media", "raw"],
   },
   {
     name: "Google Ads" as const,
-    sub: "Search, Display & Shopping",
-    status: "soon",
-    statusLabel: "Coming Soon",
-    glow: false,
-    commands: [],
+    sub: "REST v24 · GAQL search + mutate",
+    status: "available",
+    statusLabel: "Available",
+    glow: true,
+    commands: ["campaign", "insight"],
   },
   {
     name: "TikTok for Business" as const,
-    sub: "TikTok Ads Manager",
-    status: "soon",
-    statusLabel: "Coming Soon",
-    glow: false,
-    commands: [],
+    sub: "Business API v1.3",
+    status: "available",
+    statusLabel: "Available",
+    glow: true,
+    commands: ["campaign", "audience", "insight"],
   },
   {
     name: "LinkedIn" as const,
-    sub: "LinkedIn Marketing Solutions",
-    status: "soon",
-    statusLabel: "Coming Soon",
-    glow: false,
-    commands: [],
+    sub: "Versioned REST · Rest.li",
+    status: "available",
+    statusLabel: "Available",
+    glow: true,
+    commands: ["campaign", "insight"],
   },
 ];
 
@@ -74,7 +74,8 @@ export default function Platforms() {
             <span className="gradient-text">every major platform</span>
           </h2>
           <p className="text-muted-foreground mt-4 max-w-xl mx-auto text-balance">
-            Meta is fully supported today. Google, TikTok and LinkedIn are on the roadmap.
+            All four major ad platforms, available today, behind one consistent
+            command shape: mkt &lt;provider&gt; &lt;domain&gt; &lt;action&gt;.
           </p>
         </div>
 

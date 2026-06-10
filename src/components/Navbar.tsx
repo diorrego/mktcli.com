@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
 const links = [
-  { label: "Features", href: "#features" },
-  { label: "Platforms", href: "#platforms" },
-  { label: "Install", href: "#install" },
+  { label: "Features", href: "/#features" },
+  { label: "Platforms", href: "/#platforms" },
+  { label: "Install", href: "/#install" },
+  { label: "Docs", href: "/docs" },
   { label: "GitHub", href: "https://github.com/diorrego/mkt-cli", external: true },
 ];
 
