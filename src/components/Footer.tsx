@@ -2,6 +2,7 @@ import { Github, ExternalLink } from "lucide-react";
 
 const links = [
   { label: "GitHub", href: "https://github.com/diorrego/mkt-cli", external: true },
+  { label: "crates.io", href: "https://crates.io/crates/mkt-cli", external: true },
   { label: "CONTRIBUTING", href: "https://github.com/diorrego/mkt-cli/blob/main/CONTRIBUTING.md", external: true },
   { label: "CHANGELOG", href: "https://github.com/diorrego/mkt-cli/blob/main/CHANGELOG.md", external: true },
   { label: "LICENSE", href: "https://github.com/diorrego/mkt-cli/blob/main/LICENSE", external: true },

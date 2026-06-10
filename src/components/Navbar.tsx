@@ -7,6 +7,7 @@ const links = [
   { label: "Install", href: "/#install" },
   { label: "Docs", href: "/docs" },
   { label: "GitHub", href: "https://github.com/diorrego/mkt-cli", external: true },
+  { label: "crates.io", href: "https://crates.io/crates/mkt-cli", external: true },
 ];
 
 export default function Navbar() {
