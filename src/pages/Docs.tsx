@@ -74,6 +74,63 @@ mkt doctor
 
 # shell completions
 mkt completions zsh > ~/.zfunc/_mkt`}</CodeBlock>
+          <p>
+            Everything is on crates.io:{" "}
+            <a
+              href="https://crates.io/crates/mkt-cli"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline font-mono"
+            >
+              mkt-cli
+            </a>{" "}
+            (the binary) plus the library crates{" "}
+            <a
+              href="https://crates.io/crates/mkt-cli-core"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline font-mono"
+            >
+              mkt-cli-core
+            </a>
+            ,{" "}
+            <a
+              href="https://crates.io/crates/mkt-meta"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline font-mono"
+            >
+              mkt-meta
+            </a>
+            ,{" "}
+            <a
+              href="https://crates.io/crates/mkt-google"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline font-mono"
+            >
+              mkt-google
+            </a>
+            ,{" "}
+            <a
+              href="https://crates.io/crates/mkt-tiktok"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline font-mono"
+            >
+              mkt-tiktok
+            </a>{" "}
+            and{" "}
+            <a
+              href="https://crates.io/crates/mkt-linkedin"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline font-mono"
+            >
+              mkt-linkedin
+            </a>
+            , in case you want to build your own tooling on top.
+          </p>
         </Section>
 
         <Section id="auth" title="Authentication">

@@ -84,14 +84,35 @@ export default function Installation() {
         </div>
 
         {/* Two install options */}
-        <div className="fade-in-up flex flex-col sm:flex-row gap-5 mb-16">
+        <div className="fade-in-up flex flex-col sm:flex-row gap-5 mb-6">
           <CodeBlock label="From Cargo (recommended)" code="cargo install mkt-cli" />
           <CodeBlock
             label="From Releases (prebuilt binary)"
-            code={`# Download from GitHub Releases\ncurl -L https://github.com/diorrego/mkt-cli/releases/latest \\
-  -o mkt-cli && chmod +x mkt-cli`}
+            code={`# Linux x86_64; see Releases for macOS and Windows\ncurl -L https://github.com/diorrego/mkt-cli/releases/latest/download/mkt-x86_64-unknown-linux-musl.tar.gz \\
+  | tar xz && sudo mv mkt /usr/local/bin/`}
           />
         </div>
+        <p className="fade-in-up text-center text-sm text-muted-foreground mb-16">
+          Published on{" "}
+          <a
+            href="https://crates.io/crates/mkt-cli"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline"
+          >
+            crates.io
+          </a>
+          , prebuilt binaries on{" "}
+          <a
+            href="https://github.com/diorrego/mkt-cli/releases"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline"
+          >
+            GitHub Releases
+          </a>
+          .
+        </p>
 
         {/* Quick start steps */}
         <div className="fade-in-up">
