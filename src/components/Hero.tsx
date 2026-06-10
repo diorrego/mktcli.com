@@ -63,10 +63,15 @@ export default function Hero() {
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 flex flex-col items-center text-center gap-8">
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full text-sm font-mono text-muted-foreground animate-fade-in">
+        <a
+          href="https://crates.io/crates/mkt-cli"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full text-sm font-mono text-muted-foreground animate-fade-in hover:text-foreground hover:border-white/30 transition-colors"
+        >
           <span className="w-2 h-2 rounded-full bg-green-neon animate-pulse inline-block" />
-          Free &amp; open source &middot; Written in Rust &middot; MIT / Apache
-        </div>
+          Now on crates.io &middot; Free &amp; open source &middot; MIT / Apache
+        </a>
 
         {/* Headline */}
         <h1 className="text-5xl md:text-7xl font-semibold leading-tight tracking-tight animate-fade-in text-balance">
