@@ -1,0 +1,512 @@
+# mkt — full documentation for LLMs
+
+> Generated from the mkt-cli repository docs (v0.2.0, 2026-06-12).
+
+---
+
+# README
+
+# mkt
+
+The ads CLI built for coding agents — and the humans who work with them. Free and open source (MIT / Apache-2.0), written in Rust. Manage ads, ad sets, audiences, organic posts, and analytics across **Meta, Google Ads, TikTok, and LinkedIn** from a single terminal.
+
+Claude Code, Codex, Cursor, or any agent with a shell can drive your ad operations with `mkt` the same way they use the AWS or GitHub CLIs: stable JSON output on stdout, structured errors on stderr, a documented exit-code contract, `--dry-run` everywhere, and zero interactive prompts.
+
+## Why mkt?
+
+Marketing teams juggle multiple ad platforms daily, each with its own dashboard, API, and workflow. `mkt` brings all of them under one consistent command-line interface so you — or your coding agent — can script, automate, and manage campaigns without leaving the terminal. And because this tool spends real money, safety is the default: every campaign, ad set, and boosted post is **created paused**; starting delivery is always an explicit step.
+
+## Features
+
+- Unified command structure across all platforms: `mkt <provider> <domain> <action>`
+- Campaign management on all four platforms (list, get, create, update, delete)
+- Meta ad sets, ad creatives, media upload, and post boosting
+- Audience management with local SHA-256 PII hashing before any upload
+- Organic post publishing (Facebook and Instagram)
+- Unified analytics (cost always in currency units) as table, JSON, or CSV
+- Agent contract: stable exit codes (0-7), structured JSON errors with recovery hints
+- Spend safety: `--dry-run` on every mutating command; everything is created paused
+- Reliability: automatic retries with exponential backoff honoring `Retry-After` —
+  reads retry transient failures, writes never repeat a request that may have executed
+- MCP server (`mkt mcp serve`) for Claude Desktop / ChatGPT
+- Shell completions, profile-based multi-account config
+
+## Supported Platforms
+
+| Platform | Status | Domains |
+|----------|--------|---------|
+| Meta (Facebook/Instagram) | Available | campaign, adset, audience, insight, post, creative, media, raw |
+| Google Ads | Available | campaign, insight |
+| TikTok for Business | Available | campaign, audience, insight |
+| LinkedIn Marketing | Available | campaign, insight |
+
+## Installation
+
+### From source
+
+```bash
+cargo install mkt-cli
+```
+
+### From releases
+
+Prebuilt static binaries for Linux (x86_64/aarch64 musl), macOS (Intel/Apple
+Silicon), and Windows are on [GitHub Releases](https://github.com/diorrego/mkt-cli/releases):
+
+```bash
+curl -L https://github.com/diorrego/mkt-cli/releases/latest/download/mkt-x86_64-unknown-linux-musl.tar.gz | tar xz
+sudo mv mkt /usr/local/bin/
+```
+
+## Quick Start
+
+### 1. Set your credentials
+
+```bash
+export MKT_META_ACCESS_TOKEN="your-token-here"
+export MKT_META_AD_ACCOUNT_ID="act_123456789"
+```
+
+Or create a config file at `~/.config/mkt/config.toml`:
+
+```toml
+[defaults]
+output = "table"
+profile = "default"
+
+[profiles.default]
+provider = "meta"
+
+[profiles.default.meta]
+access_token = "your-token-here"
+ad_account_id = "act_123456789"
+```
+
+### 2. Verify your setup
+
+```bash
+mkt doctor
+```
+
+### 3. Start managing campaigns
+
+```bash
+# List campaigns (works the same on meta, google, tiktok, linkedin)
+mkt meta campaign list
+mkt --output json google campaign list --status active
+
+# Create campaigns — always paused until you activate them
+mkt --dry-run meta campaign create --name "Test" --objective OUTCOME_TRAFFIC
+mkt meta campaign create --name "Q1 Launch" --objective OUTCOME_LEADS
+mkt google campaign create --name "Brand" --objective SEARCH --daily-budget 50
+# (declares containsEuPoliticalAdvertising=DOES_NOT_CONTAIN… by default; override via --extra)
+mkt tiktok campaign create --name "Spark" --objective TRAFFIC --daily-budget 50
+
+# Meta ad sets and post boosting (boost ad is created PAUSED)
+mkt meta adset create --campaign <id> --name "US 25-55" --status paused \
+  --daily-budget 2500 --targeting '{"geo_locations":{"countries":["US"]}}'
+mkt meta post promote <post_id> --adset <adset_id>
+
+# Audiences — PII is SHA-256 hashed locally before upload
+mkt meta audience add-users <audience_id> --email a@example.com
+
+# Unified insights across platforms
+mkt meta insight get --range 7d --metrics impressions,clicks,spend
+mkt --output csv linkedin insight get
+
+# Publish an Instagram post
+mkt meta post create --platform instagram \
+  --image-url "https://cdn.example.com/photo.jpg" --message "New product launch"
+
+# Raw API access when you need it
+mkt meta raw get "act_123/campaigns" --fields id,name,status
+
+# MCP server for chat agents without a terminal
+mkt mcp serve
+```
+
+## Command Reference
+
+```
+mkt [global flags] <provider> <domain> <action> [flags]
+
+Global flags:
+  --profile <name>     Profile to use (default: "default")
+  --output <format>    Output format: table, json, csv
+  --verbose            Enable debug logging
+  --quiet              Suppress non-error output
+  --dry-run            Preview actions without executing
+  --config <path>      Custom config file path
+
+Providers:
+  meta                 Meta (Facebook / Instagram)
+  google               Google Ads (REST v24, GAQL)
+  tiktok               TikTok for Business (API v1.3)
+  linkedin             LinkedIn Marketing (versioned REST)
+
+Domains:
+  campaign             Campaign management (list, get, create, update, delete)
+  adset                Ad set management (list, create)
+  audience             Audience management (list, create, add-users)
+  insight              Analytics and reporting (get)
+  post                 Organic posts (create, promote into an ad set)
+  creative             Ad creatives (create, dark-post)
+  media                Media assets (upload-image, upload-video)
+  raw                  Direct API access (get, post)
+
+Meta-commands:
+  mkt providers        List available providers
+  mkt doctor           Verify config, credentials, and connectivity
+  mkt profile list     List configured profiles
+  mkt profile show     Show profile details
+  mkt completions      Generate shell completions (bash, zsh, fish, ...)
+  mkt mcp serve        MCP server over stdio (Claude Desktop / ChatGPT)
+```
+
+## For coding agents
+
+`mkt` is designed to be driven by AI coding agents (Claude Code, Codex, Cursor)
+the same way they use the AWS or GitHub CLIs: machine-readable JSON on stdout,
+structured JSON errors on stderr, a stable exit-code contract (0-7), `--dry-run`
+on every mutating command, and zero interactive prompts. See [AGENTS.md](AGENTS.md)
+for the full operating contract and recipes.
+
+## Architecture
+
+mkt is built as a Cargo workspace with clear separation of concerns:
+
+- **mkt-core**: Traits, domain models, config, output formatting, rate limiting
+  (published on crates.io as `mkt-cli-core`; the lib target is still `mkt_core`)
+- **mkt-cli**: CLI definitions, command dispatch, the binary itself
+- **mkt-meta**: Meta provider (Graph API, Marketing API, Pages API, Instagram API)
+- **mkt-google**: Google Ads provider (REST v24: GAQL search + mutate, OAuth2 refresh)
+- **mkt-tiktok**: TikTok provider (Business API v1.3: campaigns, reporting, DMP audiences)
+- **mkt-linkedin**: LinkedIn provider (versioned REST: Rest.li finders, PARTIAL_UPDATE, adAnalytics)
+- **mkt-testkit**: Shared test utilities, mocks, fixtures
+
+Every platform implements the `MarketingProvider` trait from `mkt-core`, which means adding a new provider is just implementing that trait and registering it.
+
+## Development
+
+```bash
+# Run all tests
+cargo test --workspace --all-features
+
+# Check formatting
+cargo fmt --all -- --check
+
+# Run linter
+cargo clippy --workspace --all-targets --all-features
+
+# Run the CLI in development
+cargo run -p mkt-cli -- meta campaign list
+
+# Generate coverage report
+cargo llvm-cov --workspace --html
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed development guidelines.
+
+## License
+
+Licensed under either of:
+
+- Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
+- MIT License ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+
+at your option.
+
+---
+
+# Agent guide (AGENTS.md)
+
+# mkt — Agent Guide
+
+`mkt` is a multi-platform marketing CLI (Meta, Google Ads, TikTok, LinkedIn)
+designed to be driven by coding agents and scripts. This file is the operating
+contract: command shape, output formats, exit codes, and safety rules.
+
+## Command shape
+
+```
+mkt [global flags] <provider> <domain> <action> [flags]
+```
+
+- Providers: `meta`, `google`, `tiktok`, `linkedin` — all available.
+- Domains: `campaign`, `adset`, `audience`, `insight`, `post`, `creative`, `media`, `raw`.
+- Meta-commands: `mkt providers`, `mkt doctor`, `mkt profile list|show|set`.
+- Every command and subcommand has `--help` with examples. Discovery is a
+  deterministic tree walk: `mkt --help` → `mkt meta --help` → `mkt meta campaign --help`.
+
+## Machine-readable output
+
+- `--output json` prints data as JSON to **stdout**. Logs and diagnostics go to **stderr**.
+- On failure with `--output json`, stderr carries exactly one JSON object:
+
+```json
+{"ok": false, "error": {"type": "auth_error", "message": "...", "suggestion": "Run 'mkt doctor' ...", "transient": true}}
+```
+
+- `error.type` is a stable snake_case identifier: `validation_error`,
+  `config_error`, `auth_error`, `provider_not_found`, `rate_limited`,
+  `not_supported`, `api_error`, `http_error`, `io_error`, `serde_error`.
+- `transient: true` means the same request may succeed if retried (rate
+  limits, 5xx). Honor `suggestion` when present — it names the recovery command.
+- `--output csv` and `--output table` (default) are for humans/spreadsheets.
+
+## Exit codes (stable contract)
+
+| Code | Meaning                                  | Agent action                       |
+|------|------------------------------------------|------------------------------------|
+| 0    | success                                  | continue                           |
+| 1    | unexpected error (I/O, transport, bug)   | inspect stderr                     |
+| 2    | invalid input or configuration           | fix flags/config, do not retry     |
+| 3    | authentication failed                    | run `mkt doctor`, check env vars   |
+| 4    | resource or provider not found           | verify the ID                      |
+| 5    | rate limited (transient)                 | wait the suggested delay and retry |
+| 6    | feature not supported by the provider    | run `mkt providers`                |
+| 7    | provider API rejected the request        | inspect `error.message`            |
+
+Note: since 0.2.0 `mkt` already retries transient failures internally
+(exponential backoff honoring `Retry-After`; reads up to 4 attempts, writes
+only on rate limits / connection failures). An exit code 5 means those
+retries were exhausted — wait the suggested delay before trying again.
+
+## Safety rules (this tool spends real money)
+
+1. **Always `--dry-run` first** on any mutating command (`create`, `update`,
+   `delete`, `promote`, `add-users`). It prints what would happen and exits 0
+   without calling the API.
+2. Promoted-post ads and new campaigns should start **paused**
+   (`--status paused`; `post promote` always creates the ad PAUSED — a human
+   or an explicit follow-up command activates spend).
+3. Never echo access tokens. `mkt doctor` validates credentials without
+   printing them.
+4. Audience uploads hash PII (emails/phones) locally with SHA-256 before any
+   network call; you may pass raw or pre-hashed values.
+
+## Authentication (non-interactive)
+
+Environment variables take precedence over the config file:
+
+```bash
+# Meta
+export MKT_META_ACCESS_TOKEN="..."          # system-user token
+export MKT_META_AD_ACCOUNT_ID="act_123456789"
+# Google Ads
+export MKT_GOOGLE_ACCESS_TOKEN="..."        # or refresh-token trio in config.toml
+export MKT_GOOGLE_DEVELOPER_TOKEN="..."
+export MKT_GOOGLE_CUSTOMER_ID="1234567890"
+# TikTok
+export MKT_TIKTOK_ACCESS_TOKEN="..."
+export MKT_TIKTOK_ADVERTISER_ID="7106541027904733185"
+# LinkedIn
+export MKT_LINKEDIN_ACCESS_TOKEN="..."
+export MKT_LINKEDIN_AD_ACCOUNT_ID="506333826"
+```
+
+Or `~/.config/mkt/config.toml` (override dir with `MKT_CONFIG_DIR`):
+
+```toml
+[profiles.default.meta]
+access_token = "..."
+ad_account_id = "act_123456789"
+page_id = "..."        # required for Facebook posts / dark posts
+ig_user_id = "..."     # required for Instagram posts
+api_version = "v25.0"  # optional override
+```
+
+Verify with `mkt doctor` (exit 0 = ready). There are no interactive prompts
+anywhere in the CLI.
+
+## Recipes
+
+```bash
+# List active campaigns as JSON
+mkt --output json meta campaign list --status active
+
+# Create a paused campaign (safe), then inspect it
+mkt --dry-run meta campaign create --name "Q3 Launch" --objective OUTCOME_SALES
+mkt --output json meta campaign create --name "Q3 Launch" --objective OUTCOME_SALES --status paused
+
+# Ad sets within a campaign
+mkt --output json meta adset list --campaign 120330000000000001
+mkt meta adset create --campaign 120330000000000001 --name "US 25-55" \
+  --status paused --daily-budget 2500 \
+  --targeting '{"geo_locations":{"countries":["US"]},"age_min":25,"age_max":55}' \
+  --optimization-goal LINK_CLICKS --billing-event IMPRESSIONS
+
+# Boost an organic post (ad is created PAUSED inside an existing ad set)
+mkt meta post promote 123456789_987654321 --adset 23845600000000001
+
+# Upload hashed customers to an audience
+mkt meta audience add-users 23842000001 --email a@example.com --phone "+1 555 123 4567"
+
+# Insights for the last 7 days
+mkt --output json meta insight get --range 7d --metrics impressions,clicks,spend
+
+# Raw escape hatch for unwrapped Graph API endpoints
+mkt meta raw get "act_123/campaigns" --fields id,name,status
+mkt meta raw post "act_123/campaigns" --body '{"name":"X","objective":"OUTCOME_TRAFFIC","special_ad_categories":[]}'
+```
+
+## Cross-platform notes
+
+- `--objective` is platform-native: Meta `OUTCOME_*`, Google channel types
+  (`SEARCH`, `PERFORMANCE_MAX`), TikTok (`TRAFFIC`, `LEAD_GENERATION`),
+  LinkedIn (`LEAD_GENERATION`, `WEBSITE_VISIT`).
+- Google and LinkedIn require `--daily-budget` on create; LinkedIn also
+  requires `--extra '{"campaignGroup":"urn:li:sponsoredCampaignGroup:<id>"}'`.
+- Deletes are soft on every platform (status transitions). TikTok's DELETE
+  is irreversible.
+- All `create` commands default to a paused state across all platforms.
+
+## MCP server (optional)
+
+For chat environments without a terminal (Claude Desktop, ChatGPT):
+`mkt mcp serve` speaks MCP over stdio with six consolidated tools
+(campaign_list/get/create/set_status, insights_get, provider_health).
+Coding agents with shell access should use the CLI directly — it is
+faster, cheaper in tokens, and exposes every capability.
+
+## Development
+
+```bash
+cargo test --workspace --all-features   # full suite
+cargo fmt --all -- --check              # formatting gate
+cargo clippy --workspace --all-targets --all-features  # zero-warning policy
+cargo run -p mkt-cli -- meta campaign list
+```
+
+Architecture: Cargo workspace — `mkt-core` (trait `MarketingProvider`, models,
+config, output, PII hashing), `mkt-meta` (Graph API v25.0), `mkt-cli` (clap
+binary), `mkt-testkit` (wiremock fixtures). New providers implement
+`MarketingProvider` and register in `mkt-cli`. See `CLAUDE.md` and
+`dev/MKT_PROJECT_SPEC.md` for full conventions.
+
+---
+
+# Changelog
+
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [0.2.0] - 2026-06-12
+
+Reliability release: every provider call now retries transient failures
+safely, and all four integrations were audited against the official API
+docs current as of June 2026.
+
+### Added
+
+- Retry with exponential backoff and jitter in `mkt-cli-core`: reads
+  retry transient failures (429/5xx/transport) up to 4 attempts; writes
+  retry only rate limits and connection failures so a timed-out create
+  can never duplicate spend. Server `Retry-After` hints override the
+  computed backoff (clamped to 120s)
+- All provider clients parse `Retry-After` and surface HTTP 429 as a
+  structured rate-limit error with the server's wait hint
+- Shared HTTP client: 10s connect timeout, TCP keepalive, contactable
+  User-Agent (`mkt/x.y.z (+https://mktcli.com)`)
+- TikTok: `campaign/create` sends a UUID `request_id` so network-level
+  retries deduplicate server-side instead of creating duplicates
+- MCP server: integration tests covering the `tools/call` error contract
+  (structured `[error_type]` tags, recovery suggestions, no token leakage)
+- Release workflow publishes all crates to crates.io via Trusted
+  Publishing (OIDC) in dependency order; `RELEASING.md` documents the flow
+
+### Fixed
+
+- Google Ads: campaign creation now sends the mandatory EU political
+  advertising declaration (`containsEuPoliticalAdvertising`, default
+  `DOES_NOT_CONTAIN…`, overridable via `--extra`) — required by the API
+  since 2026-04-01; without it every create failed
+- Google Ads: `insight get` without `--date-range` now defaults to
+  `LAST_30_DAYS` instead of emitting GAQL that the API rejects
+- Google Ads: a bidding strategy passed via `--extra` replaces the
+  `manualCpc` default instead of producing two members of the oneof
+- LinkedIn: `insight get` always sends the required `dateRange`
+  (defaulting to the last 30 days) instead of a guaranteed 400
+- LinkedIn: more than 20 metrics per analytics request is rejected
+  locally with a validation error (documented API maximum)
+- LinkedIn: deleting a `DRAFT` campaign uses hard DELETE as documented;
+  other statuses still transition to `PENDING_DELETION`
+- Meta: audience reads request `approximate_count_lower_bound`/`_upper_bound`
+  (v25.0 removed `approximate_count`) and `time_created`
+- Meta: `media upload-image --url` downloads the asset and uploads it
+  Base64-encoded — the `adimages` edge has no `url` parameter
+- Meta: creating a creative without a configured `page_id` fails fast
+  with a validation error instead of sending the invalid `"me"`
+- TikTok: lifetime insights (no date range) no longer combine
+  `query_lifetime=true` with the unsupported `stat_time_day` dimension
+
+## [0.1.1] - 2026-06-10
+
+### Added
+
+- Per-crate READMEs so every published crate has a proper crates.io page
+  (the library crates went out without one in 0.1.0)
+
+## [0.1.0] - 2026-06-10
+
+First public release: `cargo install mkt-cli` (binary `mkt`). The core
+library is published as `mkt-cli-core` (the `mkt-core` name was taken on
+crates.io); its library target is still `mkt_core`.
+
+### Added
+
+- TikTok for Business provider (API v1.3): campaign CRUD, integrated
+  reporting, DMP audience listing; envelope error contract (40100 ->
+  transient rate limit, 401xx -> auth)
+- LinkedIn Marketing provider (versioned REST 202605): campaign CRUD via
+  Rest.li finders and PARTIAL_UPDATE patches, adAnalytics insights,
+  soft delete via PENDING_DELETION
+- MCP server (`mkt mcp serve`): stdio Model Context Protocol server with
+  six consolidated tools for chat agents; campaigns always created paused
+- `mkt completions <shell>` for bash/zsh/fish/powershell/elvish
+- `mkt doctor` now reports per-provider credential presence (never values)
+- `--extra` JSON flag on campaign create for provider-specific fields
+- Google Ads provider (REST v24): campaign CRUD via GAQL + mutate endpoints,
+  insights with `costMicros` conversion, OAuth2 refresh-token exchange,
+  `mkt google campaign|insight` commands (enabled by default)
+- Meta ad sets: `mkt meta adset list|create` with targeting, budget,
+  optimization goal, and billing event
+- Meta post promotion (`mkt meta post promote --adset`): boost flow via
+  `object_story_id` creative + ad, always created PAUSED for spend safety
+- Meta audience user upload (`mkt meta audience add-users`) with local
+  SHA-256 PII hashing (`mkt_core::pii`, shared across future providers)
+- Agent-first contract: stable exit codes (0-7) documented in `--help`,
+  structured JSON errors on stderr (`{ok, error: {type, message,
+  suggestion, transient}}`) with `--output json`
+- `AGENTS.md` operating guide and `llms.txt` index for coding agents
+- `--daily-budget` flag on `campaign create`
+
+### Changed
+
+- Default Meta Graph API version bumped from v24.0 to v25.0
+- `PromotePostInput` redesigned: promotion targets an existing ad set
+  (budget/targeting live on the ad set, matching all platforms' semantics)
+
+### Initial scaffolding
+
+- Core workspace structure with 7 crates
+- `MarketingProvider` trait with full CRUD method signatures
+- Domain models: Campaign, AdSet, Ad, Creative, Audience, Insight, Post, Media
+- Meta provider with Graph API integration (campaigns, posts, insights, raw API)
+- CLI with clap: campaign, audience, insight, post, creative, media, raw commands
+- Configuration system with TOML profiles and XDG paths
+- Output formatting: table, JSON, CSV
+- Token-bucket rate limiting
+- Authentication with env var and config file fallback
+- `mkt doctor` for config verification
+- `mkt providers` to list available providers
+- Profile management commands
+- Dry-run mode for all write operations
+- CI pipeline (lint, test, coverage, audit)
+- Cross-platform release pipeline
