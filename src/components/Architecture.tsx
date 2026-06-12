@@ -18,22 +18,22 @@ const crates = [
   },
   {
     name: "mkt-google",
-    desc: "Google Ads API integration. Work in progress.",
-    color: "text-muted-foreground border-border bg-white/5",
+    desc: "Google Ads REST API: campaign CRUD with budget handling and GAQL insights.",
+    color: "text-cyan border-cyan/30 bg-cyan/10",
   },
   {
     name: "mkt-tiktok",
-    desc: "TikTok for Business API. Planned.",
-    color: "text-muted-foreground border-border bg-white/5",
+    desc: "TikTok for Business API: campaigns, DMP audiences, and integrated reporting.",
+    color: "text-cyan border-cyan/30 bg-cyan/10",
   },
   {
     name: "mkt-linkedin",
-    desc: "LinkedIn Marketing API. Planned.",
-    color: "text-muted-foreground border-border bg-white/5",
+    desc: "LinkedIn Marketing API: Rest.li campaign CRUD and adAnalytics insights.",
+    color: "text-cyan border-cyan/30 bg-cyan/10",
   },
   {
-    name: "mkt-config",
-    desc: "Profile-based credential storage and multi-account configuration.",
+    name: "mkt-testkit",
+    desc: "Shared test utilities: HTTP mocks and a reference provider used by every crate's integration tests.",
     color: "text-green-neon border-green-neon/30 bg-green-neon/10",
   },
 ];
@@ -115,19 +115,19 @@ export default function Architecture() {
                   <span className="text-muted-foreground">{"{"}</span>
                 </span>
                 <span className="pl-6 text-muted-foreground">
-                  <span className="text-brand-blue">fn</span>
+                  <span className="text-brand-blue">async fn</span>
                   <span> list_campaigns</span>
-                  <span className="text-muted-foreground">{"(&self, opts: &CampaignListOpts) -> Result<Vec<Campaign>>;"}</span>
+                  <span className="text-muted-foreground">{"(&self, filters: &CampaignFilters) -> Result<Paginated<Campaign>>;"}</span>
                 </span>
                 <span className="pl-6 text-muted-foreground">
-                  <span className="text-brand-blue">fn</span>
+                  <span className="text-brand-blue">async fn</span>
                   <span> create_audience</span>
-                  <span className="text-muted-foreground">{"(&self, opts: &AudienceCreateOpts) -> Result<Audience>;"}</span>
+                  <span className="text-muted-foreground">{"(&self, input: &CreateAudienceInput) -> Result<Audience>;"}</span>
                 </span>
                 <span className="pl-6 text-muted-foreground">
-                  <span className="text-brand-blue">fn</span>
+                  <span className="text-brand-blue">async fn</span>
                   <span> get_insights</span>
-                  <span className="text-muted-foreground">{"(&self, opts: &InsightOpts) -> Result<Insights>;"}</span>
+                  <span className="text-muted-foreground">{"(&self, query: &InsightsQuery) -> Result<InsightsReport>;"}</span>
                 </span>
                 <span className="pl-6 text-muted-foreground">
                   <span className="text-muted-foreground/50">// ... and more</span>
