@@ -5,7 +5,7 @@ const features = [
   {
     icon: Bot,
     title: "Agent-first contract",
-    desc: "Documented exit codes (0-7), structured JSON errors with recovery hints, and an AGENTS.md operating guide. Agents branch on codes, not on prose.",
+    desc: "Documented exit codes (0-7), structured JSON errors with recovery hints, JSON data on stdout with --output json, and an AGENTS.md operating guide.",
   },
   {
     icon: ShieldCheck,
@@ -14,8 +14,8 @@ const features = [
   },
   {
     icon: Braces,
-    title: "Stable JSON output",
-    desc: "Data goes to stdout as JSON with --output json; logs go to stderr. Pipe into jq, scripts, or straight into an agent's context.",
+    title: "Retries built in",
+    desc: "Transient API failures retry with exponential backoff honoring Retry-After. Reads retry up to 4 times; writes never repeat a request that may have spent money.",
   },
   {
     icon: Users,
