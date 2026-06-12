@@ -13,10 +13,23 @@ const exitCodes = [
 ];
 
 const envVars = [
-  { provider: "meta", vars: ["MKT_META_ACCESS_TOKEN", "MKT_META_AD_ACCOUNT_ID"] },
+  {
+    provider: "meta",
+    vars: [
+      "MKT_META_ACCESS_TOKEN",
+      "MKT_META_AD_ACCOUNT_ID",
+      "MKT_META_PAGE_ID (posts + creatives)",
+      "MKT_META_IG_USER_ID (Instagram publishing)",
+    ],
+  },
   {
     provider: "google",
-    vars: ["MKT_GOOGLE_ACCESS_TOKEN", "MKT_GOOGLE_DEVELOPER_TOKEN", "MKT_GOOGLE_CUSTOMER_ID"],
+    vars: [
+      "MKT_GOOGLE_DEVELOPER_TOKEN",
+      "MKT_GOOGLE_CUSTOMER_ID",
+      "MKT_GOOGLE_ACCESS_TOKEN — or the OAuth trio:",
+      "MKT_GOOGLE_CLIENT_ID + MKT_GOOGLE_CLIENT_SECRET + MKT_GOOGLE_REFRESH_TOKEN",
+    ],
   },
   { provider: "tiktok", vars: ["MKT_TIKTOK_ACCESS_TOKEN", "MKT_TIKTOK_ADVERTISER_ID"] },
   { provider: "linkedin", vars: ["MKT_LINKEDIN_ACCESS_TOKEN", "MKT_LINKEDIN_AD_ACCOUNT_ID"] },
