@@ -1,36 +1,86 @@
 # mkt
 
-> Multi-platform marketing CLI in Rust: manage ads, ad sets, audiences,
-> organic posts, and analytics across Meta (Facebook/Instagram), Google Ads,
-> TikTok, and LinkedIn from one terminal. Built agent-first: stable JSON
-> output on stdout, structured JSON errors on stderr, documented exit codes
-> (0-7), --dry-run on every mutating command, fully non-interactive.
+> Free, open-source Rust CLI (MIT/Apache-2.0) that lets coding agents — and
+> the humans working with them — run ad campaigns on Meta, Google Ads,
+> TikTok, and LinkedIn from one terminal: campaigns, ad sets, audiences,
+> organic posts, and analytics with stable JSON output, documented exit
+> codes, and spend-safe defaults. Current version: 0.2.0 (2026-06-12).
 
+**How to operate mkt (agent quickstart).**
 Command shape: `mkt [global flags] <provider> <domain> <action> [flags]`.
-Install: `cargo install mkt-cli` (binary `mkt`) or prebuilt binaries from
-GitHub Releases. Start with `mkt --help` (includes the exit-code table) and
-`mkt doctor` (validates credentials without printing them). Credentials via
-`MKT_*` environment variables or `~/.config/mkt/config.toml` profiles.
-Safety contract: campaigns, ad sets, and boosted posts are always created
-PAUSED; activating delivery is an explicit separate step. Transient API
-failures retry automatically with exponential backoff honoring Retry-After.
-An MCP server (`mkt mcp serve`) exposes the same operations to chat agents
-without a terminal (Claude Desktop, ChatGPT).
+Providers and their domains:
+
+- meta: campaign, adset, audience, insight, post, creative, media, raw
+- google: campaign, insight
+- tiktok: campaign, audience, insight
+- linkedin: campaign, insight
+
+Install: `cargo install mkt-cli` (binary `mkt`) or static binaries from
+GitHub Releases. First commands: `mkt --help` (includes the exit-code
+table), `mkt providers`, `mkt doctor` (validates credentials, never prints
+values).
+
+Credentials resolve env-first, then from `~/.config/mkt/config.toml`
+profiles (override the directory with MKT_CONFIG_DIR):
+
+- Meta: MKT_META_ACCESS_TOKEN, MKT_META_AD_ACCOUNT_ID; MKT_META_PAGE_ID
+  (posts/creatives), MKT_META_IG_USER_ID (Instagram)
+- Google: MKT_GOOGLE_DEVELOPER_TOKEN, MKT_GOOGLE_CUSTOMER_ID, and
+  MKT_GOOGLE_ACCESS_TOKEN or the MKT_GOOGLE_CLIENT_ID /
+  MKT_GOOGLE_CLIENT_SECRET / MKT_GOOGLE_REFRESH_TOKEN trio
+- TikTok: MKT_TIKTOK_ACCESS_TOKEN, MKT_TIKTOK_ADVERTISER_ID
+- LinkedIn: MKT_LINKEDIN_ACCESS_TOKEN, MKT_LINKEDIN_AD_ACCOUNT_ID
+
+Operating contract: JSON data on stdout with `--output json`; structured
+JSON errors on stderr with a stable `error.type` and a recovery
+`suggestion`; exit codes 0-7 (0 ok, 2 validation, 3 auth, 4 not found,
+5 rate limited, 6 unsupported, 7 provider rejection). Safety: every
+mutating command supports `--dry-run`; campaigns, ad sets, and boosts are
+always created PAUSED — activating spend is an explicit separate step.
+Reliability: transient failures retry automatically with exponential
+backoff honoring Retry-After; writes never repeat a request that may have
+executed. Audience PII (emails/phones) is SHA-256 hashed locally before
+upload. `mkt mcp serve` exposes the same operations over the Model Context
+Protocol (stdio) for chat agents without a terminal; tools: campaign_list,
+campaign_get, campaign_create, campaign_set_status, insights_get,
+provider_health.
 
 ## Docs
 
-- [Agent guide](https://raw.githubusercontent.com/diorrego/mkt-cli/main/AGENTS.md): output formats, exit codes, safety rules, recipes for agents
-- [README](https://raw.githubusercontent.com/diorrego/mkt-cli/main/README.md): installation, quick start, full command reference
-- [Contributing](https://raw.githubusercontent.com/diorrego/mkt-cli/main/CONTRIBUTING.md): development workflow
+- [Agent guide (AGENTS.md)](https://raw.githubusercontent.com/diorrego/mkt-cli/main/AGENTS.md): the full operating contract — output formats, exit codes, credential setup, safety rules, copy-paste recipes
+- [README](https://raw.githubusercontent.com/diorrego/mkt-cli/main/README.md): installation, quick start, command reference, architecture overview
+- [Changelog](https://raw.githubusercontent.com/diorrego/mkt-cli/main/CHANGELOG.md): versioned release history (Keep a Changelog format)
+- [Full docs bundle (llms-full.txt)](https://mktcli.com/llms-full.txt): README + agent guide + changelog concatenated for one-shot ingestion
 
-## Reference
+## Source map
 
-- [GitHub repository](https://github.com/diorrego/mkt-cli): source, issues, releases
+- [Repository](https://github.com/diorrego/mkt-cli): Cargo workspace, issues, releases
+- [crates/mkt-core](https://github.com/diorrego/mkt-cli/tree/main/crates/mkt-core): the MarketingProvider trait, domain models, error taxonomy with exit codes, config profiles, retry/backoff layer
+- [crates/mkt-cli](https://github.com/diorrego/mkt-cli/tree/main/crates/mkt-cli): clap command tree, provider wiring, doctor, MCP server (src/mcp.rs)
+- [crates/mkt-meta](https://github.com/diorrego/mkt-cli/tree/main/crates/mkt-meta): Meta Graph API v25.0 — campaigns, ad sets, creatives, audiences with PII hashing, organic + dark posts, media upload
+- [crates/mkt-google](https://github.com/diorrego/mkt-cli/tree/main/crates/mkt-google): Google Ads REST v24 — GAQL search, mutate operations, OAuth refresh, EU-PAR declaration
+- [crates/mkt-tiktok](https://github.com/diorrego/mkt-cli/tree/main/crates/mkt-tiktok): TikTok Business API v1.3 — campaigns, DMP audiences, integrated reporting, idempotent creates
+- [crates/mkt-linkedin](https://github.com/diorrego/mkt-cli/tree/main/crates/mkt-linkedin): LinkedIn Marketing API (versioned REST 202605) — Rest.li finders, PARTIAL_UPDATE, adAnalytics
+- [crates/mkt-testkit](https://github.com/diorrego/mkt-cli/tree/main/crates/mkt-testkit): wiremock fixtures and a reference provider used by every crate's integration tests
+- [CI workflows](https://github.com/diorrego/mkt-cli/tree/main/.github/workflows): lint + multi-OS tests + coverage, security audit, tag-driven release (binaries + crates.io)
+
+## API reference
+
 - [crates.io: mkt-cli](https://crates.io/crates/mkt-cli): the installable binary crate
-- [crates.io: mkt-cli-core](https://crates.io/crates/mkt-cli-core): core library (MarketingProvider trait, models, errors)
+- [docs.rs: mkt-cli-core](https://docs.rs/mkt-cli-core): core library API — MarketingProvider trait, models, MktError
+- [docs.rs: mkt-meta](https://docs.rs/mkt-meta): Meta provider API docs
+- [docs.rs: mkt-google](https://docs.rs/mkt-google): Google Ads provider API docs
+- [docs.rs: mkt-tiktok](https://docs.rs/mkt-tiktok): TikTok provider API docs
+- [docs.rs: mkt-linkedin](https://docs.rs/mkt-linkedin): LinkedIn provider API docs
+
+## Website
+
+- [mktcli.com](https://mktcli.com/): product overview, feature grid, install methods
+- [mktcli.com/docs](https://mktcli.com/docs): human-readable setup guide — install, authentication, command shape, exit codes, MCP
 
 ## Optional
 
-- [Changelog](https://raw.githubusercontent.com/diorrego/mkt-cli/main/CHANGELOG.md): release history
-- [Security policy](https://raw.githubusercontent.com/diorrego/mkt-cli/main/SECURITY.md): reporting vulnerabilities
-- [Release process](https://raw.githubusercontent.com/diorrego/mkt-cli/main/RELEASING.md): how versions ship
+- [Contributing](https://raw.githubusercontent.com/diorrego/mkt-cli/main/CONTRIBUTING.md): development workflow, code style, test conventions
+- [Release process](https://raw.githubusercontent.com/diorrego/mkt-cli/main/RELEASING.md): how versions ship to crates.io and GitHub Releases
+- [Security policy](https://raw.githubusercontent.com/diorrego/mkt-cli/main/SECURITY.md): how to report vulnerabilities
+- [GitHub Releases](https://github.com/diorrego/mkt-cli/releases): prebuilt static binaries for Linux (musl x86_64/aarch64), macOS (Intel/Apple Silicon), Windows
