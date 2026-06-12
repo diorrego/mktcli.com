@@ -1,0 +1,36 @@
+# mkt
+
+> Multi-platform marketing CLI in Rust: manage ads, ad sets, audiences,
+> organic posts, and analytics across Meta (Facebook/Instagram), Google Ads,
+> TikTok, and LinkedIn from one terminal. Built agent-first: stable JSON
+> output on stdout, structured JSON errors on stderr, documented exit codes
+> (0-7), --dry-run on every mutating command, fully non-interactive.
+
+Command shape: `mkt [global flags] <provider> <domain> <action> [flags]`.
+Install: `cargo install mkt-cli` (binary `mkt`) or prebuilt binaries from
+GitHub Releases. Start with `mkt --help` (includes the exit-code table) and
+`mkt doctor` (validates credentials without printing them). Credentials via
+`MKT_*` environment variables or `~/.config/mkt/config.toml` profiles.
+Safety contract: campaigns, ad sets, and boosted posts are always created
+PAUSED; activating delivery is an explicit separate step. Transient API
+failures retry automatically with exponential backoff honoring Retry-After.
+An MCP server (`mkt mcp serve`) exposes the same operations to chat agents
+without a terminal (Claude Desktop, ChatGPT).
+
+## Docs
+
+- [Agent guide](https://raw.githubusercontent.com/diorrego/mkt-cli/main/AGENTS.md): output formats, exit codes, safety rules, recipes for agents
+- [README](https://raw.githubusercontent.com/diorrego/mkt-cli/main/README.md): installation, quick start, full command reference
+- [Contributing](https://raw.githubusercontent.com/diorrego/mkt-cli/main/CONTRIBUTING.md): development workflow
+
+## Reference
+
+- [GitHub repository](https://github.com/diorrego/mkt-cli): source, issues, releases
+- [crates.io: mkt-cli](https://crates.io/crates/mkt-cli): the installable binary crate
+- [crates.io: mkt-cli-core](https://crates.io/crates/mkt-cli-core): core library (MarketingProvider trait, models, errors)
+
+## Optional
+
+- [Changelog](https://raw.githubusercontent.com/diorrego/mkt-cli/main/CHANGELOG.md): release history
+- [Security policy](https://raw.githubusercontent.com/diorrego/mkt-cli/main/SECURITY.md): reporting vulnerabilities
+- [Release process](https://raw.githubusercontent.com/diorrego/mkt-cli/main/RELEASING.md): how versions ship
