@@ -4,7 +4,7 @@
 > the humans working with them — run ad campaigns on Meta, Google Ads,
 > TikTok, and LinkedIn from one terminal: campaigns, ad sets, audiences,
 > organic posts, and analytics with stable JSON output, documented exit
-> codes, and spend-safe defaults. Current version: 0.2.0 (2026-06-12).
+> codes, and spend-safe defaults. Current version: 0.3.0 (2026-06-13).
 
 **How to operate mkt (agent quickstart).**
 Command shape: `mkt [global flags] <provider> <domain> <action> [flags]`.
