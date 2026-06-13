@@ -51,8 +51,7 @@ describe("llms.txt", () => {
   });
 
   it("is dated and versioned so staleness is detectable", () => {
-    expect(llms).toMatch(/0\.2\.0/);
-    expect(llms).toMatch(/2026-06/);
+    expect(llms).toMatch(/Current version: \d+\.\d+\.\d+ \(\d{4}-\d{2}-\d{2}\)/);
   });
 
   it("ends with the spec's Optional section for secondary material", () => {
