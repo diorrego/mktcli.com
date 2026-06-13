@@ -27,6 +27,20 @@ describe("Docs — MCP section", () => {
   });
 });
 
+// Command shape section must document profile meta-commands.
+describe("Docs — command shape", () => {
+  it("documents the mkt profile list|show|set meta-commands", () => {
+    render(
+      <MemoryRouter>
+        <Docs />
+      </MemoryRouter>
+    );
+    expect(screen.getByText(/mkt profile list/)).toBeInTheDocument();
+    expect(screen.getByText(/mkt profile show/)).toBeInTheDocument();
+    expect(screen.getByText(/mkt profile set/)).toBeInTheDocument();
+  });
+});
+
 // The authentication section must document the full credential matrix the
 // CLI actually reads (mkt-cli providers.rs), not a subset.
 describe("Docs — authentication", () => {

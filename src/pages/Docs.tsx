@@ -171,6 +171,11 @@ Providers   meta · google · tiktok · linkedin
 Domains     campaign · adset · audience · insight · post · creative · media · raw
 Global      --output table|json|csv · --dry-run · --profile · --quiet
 
+# profile management (switch between ad account configurations)
+mkt profile list
+mkt profile show <name>
+mkt profile set <name> --provider meta --access-token <tok> --ad-account act_<id>
+
 # discovery is a deterministic tree walk
 mkt --help
 mkt meta --help
