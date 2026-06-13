@@ -82,7 +82,7 @@ export default function Hero() {
 
         {/* Subheadline */}
         <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed animate-fade-in text-balance">
-          Claude Code, Codex, and any agent with a shell can run your ads on Meta,
+          Claude Code, Codex, Cursor, and any agent with a shell can run your ads on Meta,
           Google, TikTok and LinkedIn — the same way they use the AWS or GitHub CLIs.
           Stable JSON output, documented exit codes, dry-run everywhere, and
           campaigns that are always created paused.
