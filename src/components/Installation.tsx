@@ -19,6 +19,7 @@ function CodeBlock({ code, label }: { code: string; label?: string }) {
           <button
             onClick={copy}
             className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded"
+            aria-label={copied ? "Copied" : "Copy to clipboard"}
           >
             {copied ? <Check size={14} className="text-green-neon" /> : <Copy size={14} />}
           </button>

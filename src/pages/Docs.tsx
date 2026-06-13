@@ -171,6 +171,11 @@ Providers   meta · google · tiktok · linkedin
 Domains     campaign · adset · audience · insight · post · creative · media · raw
 Global      --output table|json|csv · --dry-run · --profile · --quiet
 
+# profile management (switch between ad account configurations)
+mkt profile list
+mkt profile show <name>
+mkt profile set <name> --provider meta --access-token <tok> --ad-account act_<id>
+
 # discovery is a deterministic tree walk
 mkt --help
 mkt meta --help
@@ -233,6 +238,12 @@ mkt meta campaign --help`}</CodeBlock>
             Context Protocol over stdio with six consolidated tools. Coding agents with shell
             access should use the CLI directly — it is faster, cheaper in tokens, and exposes
             every capability.
+          </p>
+          <p>
+            Add this to your <code className="font-mono text-foreground/90">claude_desktop_config.json</code> (the{" "}
+            <code className="font-mono text-foreground/90">command</code> and{" "}
+            <code className="font-mono text-foreground/90">args</code> fields together run{" "}
+            <code className="font-mono text-foreground/90">mkt mcp serve</code>):
           </p>
           <CodeBlock>{`{
   "mcpServers": {

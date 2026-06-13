@@ -65,6 +65,24 @@ const tabs = [
     ],
   },
   {
+    id: "creative",
+    label: "creative",
+    lines: [
+      { type: "comment", text: "# Ad creatives (Meta only) — images, body copy, and dark posts" },
+      { type: "prompt", cmd: "mkt", sub: "meta creative create", flags: '--name "Summer Sale" --body "Shop now and save 20%" --image-url https://cdn.example.com/banner.jpg --link-url https://example.com/sale' },
+      { type: "prompt", cmd: "mkt", sub: "meta creative dark-post", flags: '--message "Exclusive offer for you" --image-url https://cdn.example.com/promo.jpg --link https://example.com/offer' },
+    ],
+  },
+  {
+    id: "media",
+    label: "media",
+    lines: [
+      { type: "comment", text: "# Upload image and video assets to the Meta ad account library" },
+      { type: "prompt", cmd: "mkt", sub: "meta media upload-image", flags: "--url https://cdn.example.com/photo.jpg --name pixel" },
+      { type: "prompt", cmd: "mkt", sub: "meta media upload-video", flags: "--url https://cdn.example.com/clip.mp4" },
+    ],
+  },
+  {
     id: "raw",
     label: "raw",
     lines: [
