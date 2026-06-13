@@ -234,6 +234,12 @@ mkt meta campaign --help`}</CodeBlock>
             access should use the CLI directly — it is faster, cheaper in tokens, and exposes
             every capability.
           </p>
+          <p>
+            Add this to your <code className="font-mono text-foreground/90">claude_desktop_config.json</code> (the{" "}
+            <code className="font-mono text-foreground/90">command</code> and{" "}
+            <code className="font-mono text-foreground/90">args</code> fields together run{" "}
+            <code className="font-mono text-foreground/90">mkt mcp serve</code>):
+          </p>
           <CodeBlock>{`{
   "mcpServers": {
     "mkt": { "command": "mkt", "args": ["mcp", "serve"] }

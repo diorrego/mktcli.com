@@ -3,6 +3,30 @@ import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import Docs from "./Docs";
 
+// MCP section must explain the Claude Desktop config format and link
+// command+args back to the actual binary invocation (mkt mcp serve).
+describe("Docs — MCP section", () => {
+  it("renders the MCP config JSON with correct command and args", () => {
+    render(
+      <MemoryRouter>
+        <Docs />
+      </MemoryRouter>
+    );
+    // The code block must contain the Claude Desktop config shape
+    expect(screen.getByText(/"command": "mkt"/)).toBeInTheDocument();
+    expect(screen.getByText(/"args": \["mcp", "serve"\]/)).toBeInTheDocument();
+  });
+
+  it("explains that command+args together run mkt mcp serve", () => {
+    render(
+      <MemoryRouter>
+        <Docs />
+      </MemoryRouter>
+    );
+    expect(screen.getAllByText(/mkt mcp serve/).length).toBeGreaterThanOrEqual(1);
+  });
+});
+
 // The authentication section must document the full credential matrix the
 // CLI actually reads (mkt-cli providers.rs), not a subset.
 describe("Docs — authentication", () => {
